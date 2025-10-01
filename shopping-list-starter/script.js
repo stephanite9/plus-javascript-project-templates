@@ -27,7 +27,9 @@ const updateItems = () => {
     }
 };
 
-let clearItems = () => {
-    document.getElementById("shopping-list-items").replaceChildren();
-};
+const clearItems = () => {
+    let listElement = document.getElementById("shopping-list-items");
+    listElement.innerHTML = "";
+    shoppingListItems = [];
+}
 

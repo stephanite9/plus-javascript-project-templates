@@ -15,13 +15,14 @@
         <h1>My Todo List</h1>
         <ul id="todo-list"></ul>
         <div id="new-task-input">
-            <input id="new-task-text" type="text" placeholder="Todo task" />
+            <input id="new-task-text" type="text" placeholder="What are we doing today?" />
+            <input type="date" id="new-task-date"/>
             <input
                 id="new-task-button"
                 type="button"
                 value="Submit"
                 onclick="addTask()"
-            />
+                />
         </div>
         <script src="script.js"></script>
     </body>

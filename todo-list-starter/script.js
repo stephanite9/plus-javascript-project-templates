@@ -1,9 +1,13 @@
 const addTask = () => {
     const newTask = document.getElementById("new-task-text");
+    const newTaskDate = document.getElementById("new-task-date");
     if (newTask.value){
         todoTasks.push(newTask.value);
-        todoTasksStatus.push(false);
+        todoTaskStatus.push(false);
+        todoTaskImportance.push(false);
+        todoTaskDates.push(newTaskDate.value);
         newTask.value = "";
+        newTaskDate.value = "";
         updateTodoList();
     }
 };
@@ -17,20 +21,40 @@ const updateTodoList = () => {
     }
 };
 
-
 const createNewTodoItemElement = (task, index) => {
     // Create a <p> element to store the task description
     const newTodoTaskTextElement = document.createElement("p");
     newTodoTaskTextElement.innerText = task;
 
+    //Create a date input field for each task
+    const dateInputElement = document.createElement("input");
+    dateInputElement.type = "date";
+    dateInputElement.value = todoTaskDates[index] || "";
+    dateInputElement.onchange = function() {
+        todoTaskDates[index] = dateInputElement.value;
+    };
+    
     // Apply a CSS class to the completed items
     if(todoTaskStatus[index] == true){
         newTodoTaskTextElement.classList.add("complete");
     }
 
+    // Apply a CSS class to important items
+    if(todoTaskImportance[index] == true){
+        newTodoTaskTextElement.classList.add("important");
+    }
+
     // Create a <li> element to contain the paragraph
     const newTodoTaskElement = document.createElement("li");
     newTodoTaskElement.appendChild(newTodoTaskTextElement);
+    
+    // Adding a button to mark each item as importance
+    const importanceButtonElement = document.createElement("input");
+    importanceButtonElement.type = "button";
+    importanceButtonElement.value = "Important";
+    importanceButtonElement.onclick = function(){
+        toggleImportant(index);
+    };
 
     // Adding a button to mark each item as complete
     const completeButtonElement = document.createElement("input");
@@ -39,10 +63,13 @@ const createNewTodoItemElement = (task, index) => {
     completeButtonElement.onclick = function(){
         toggleComplete(index);
     };
+
+    newTodoTaskElement.appendChild(dateInputElement);
+    newTodoTaskElement.appendChild(importanceButtonElement);
     newTodoTaskElement.appendChild(completeButtonElement);
     return newTodoTaskElement;
 
-};
+}
 
 const toggleComplete = (index) => {
     // If it is complete, set it to incomplete. 
@@ -55,8 +82,19 @@ const toggleComplete = (index) => {
     updateTodoList();
 };
 
-let todoTasks = ["Walk Scotch", "Make Dinner"];
+const toggleImportant = (index) => {
+    if (todoTaskImportance[index] == false){
+        todoTaskImportance[index] = true;
+    } else {
+        todoTaskImportance[index] = false;
+    }
+    updateTodoList();
+};
+
+let todoTasks = ["Walk Scotch", "Make dinner"];
+let todoTaskDates = ["", ""];
 let todoTaskStatus = [false, true];
+let todoTaskImportance = [false, false];
 updateTodoList();
 
 const todoList = document.getElementById("todo-list");
